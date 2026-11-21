@@ -80,7 +80,7 @@ stateDiagram-v2
 
 ## 4. Payment Handling and Security
 
-[Payment provider and responsibilities; no card data stored by the product unless certified to do so; webhook handling and reconciliation (see [Webhook Specification](../api-platform/webhook-specification.md)); fraud checks; security requirements.]
+[Payment provider and responsibilities; decide whether the product stores any card data (verify the obligations that apply with the payment provider and a qualified adviser); webhook handling and reconciliation (see [Webhook Specification](../api-platform/webhook-specification.md)); fraud checks; security requirements.]
 
 ## 5. Reconciliation and Reporting
 

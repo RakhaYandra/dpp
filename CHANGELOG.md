@@ -12,3 +12,6 @@ All notable changes to this project are recorded here. The project follows [sema
 - 17 product-specific templates in 5 packages: SaaS, mobile, API platform, enterprise, developer tools.
 - Guides: naming and metadata, traceability and ID scheme, document map, profiles, planning workflow, choosing packages.
 - Root documents: README, DOCUMENTATION_GUIDE, GLOSSARY, CONTRIBUTING, CODE_OF_CONDUCT, LICENSE.
+- Scripts (Python standard library only): validate-metadata, check-links, check-traceability, strip-guidance, generate-document-map, scaffold.
+- Checklists, issue forms, pull-request template and validation workflow.
+- Worked example: SlotWise (`examples/slotwise/`), a fictional product with 10 connected documents.
