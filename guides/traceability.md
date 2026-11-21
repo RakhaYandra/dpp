@@ -16,6 +16,9 @@ Traceability answers three questions: *Why does this exist?* (upward), *Is it bu
 | `GOAL-` | Business or user goal | Goals & Metrics | GOAL-01 |
 | `MET-` | Success metric | Goals & Metrics | MET-01 |
 | `PER-` | Persona | Persona | PER-01 |
+| `F-` | Research finding | User Research | F-03 |
+| `C-` | Candidate feature (pre-requirement) | MVP & Prioritization | C-02 |
+| `MON-` | Monitoring rule / alert | Observability Strategy | MON-01 |
 | `ASM-` | Assumption | Assumption Map / PRD | ASM-03 |
 | `CON-` | Constraint | PRD | CON-02 |
 | `FR-` | Functional requirement (epic level) | PRD | FR-012 |
