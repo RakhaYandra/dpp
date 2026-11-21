@@ -1,0 +1,40 @@
+# Project Manifest — the register of this project's planning documents.
+#
+# Copy to docs/00-foundation/project-manifest.yaml in your project.
+# Scripts (scaffold, validate-metadata, check-traceability) read this file.
+# Keep it small and current. Template ids are listed in guides/document-map.md.
+
+project:
+  name: "Your Product Name"
+  id_prefix: "YPN"            # optional prefix for project-wide ids, e.g. YPN-FR-001
+  product_types: [saas]       # saas | mobile | web | api-platform | enterprise | internal | developer-tools | other
+  profile: team              # solo | team | enterprise  (see guides/profiles.md)
+  prd_mode: full              # full | lite
+  owner: "Name or role"
+  created: YYYY-MM-DD
+  planning_gate_target: YYYY-MM-DD   # date by which Planning Readiness Review should pass
+
+packages:                      # optional product-specific packages in use
+  - saas
+  # - mobile
+  # - api-platform
+  # - enterprise
+  # - developer-tools
+
+# Document register. One entry per document you decided about.
+# status: not-started | draft | in-review | approved | superseded | archived | not-applicable
+# tier comes from the template (mandatory | recommended | optional | package).
+# If status is not-applicable, give a one-line reason.
+documents:
+  - { doc: product-brief,                 status: draft }
+  - { doc: goals-and-metrics,             status: not-started }
+  - { doc: prd,                           status: not-started }
+  - { doc: user-stories,                  status: not-started }
+  - { doc: non-functional-requirements,   status: not-started }
+  - { doc: architecture-overview,         status: not-started }
+  - { doc: risk-register,                 status: not-started }
+  - { doc: test-strategy,                 status: not-started }
+  - { doc: release-plan,                  status: not-started }
+  # Recommended and optional documents for your profile go here, for example:
+  - { doc: persona,                       status: not-started }
+  - { doc: use-cases,                     status: not-applicable, reason: "Simple flows; stories are sufficient" }
