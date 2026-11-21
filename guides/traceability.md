@@ -26,6 +26,12 @@ Traceability answers three questions: *Why does this exist?* (upward), *Is it bu
 | `PR-` | Prototype review finding | Prototype Review | PR-01 |
 | `API-` | API operation | API Specification | API-002 |
 | `INT-` | External integration | Integration Specification | INT-01 |
+| `SR-` | Detailed security requirement (refines an `NFR-`) | Security Requirements | SR-002 |
+| `TH-` | Threat | Threat Model | TH-03 |
+| `PD-` | Personal data item | Privacy Requirements | PD-02 |
+| `CMP-` | Compliance obligation under assessment | Compliance Assessment | CMP-01 |
+| `EX-` | Approved exception to a requirement | Security Requirements | EX-01 |
+| `UAT-` | User acceptance scenario | UAT Plan | UAT-01 |
 | `ASM-` | Assumption | Assumption Map / PRD | ASM-03 |
 | `CON-` | Constraint | PRD | CON-02 |
 | `FR-` | Functional requirement (epic level) | PRD | FR-012 |
