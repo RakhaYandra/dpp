@@ -32,6 +32,7 @@ Traceability answers three questions: *Why does this exist?* (upward), *Is it bu
 | `CMP-` | Compliance obligation under assessment | Compliance Assessment | CMP-01 |
 | `EX-` | Approved exception to a requirement | Security Requirements | EX-01 |
 | `UAT-` | User acceptance scenario | UAT Plan | UAT-01 |
+| `N-` | App notification (mobile package) | Push Notification Strategy | N-01 |
 | `ASM-` | Assumption | Assumption Map / PRD | ASM-03 |
 | `CON-` | Constraint | PRD | CON-02 |
 | `FR-` | Functional requirement (epic level) | PRD | FR-012 |
