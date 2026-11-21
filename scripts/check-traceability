@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+"""Check ids are defined once, referenced ids exist, and Must requirements are covered by stories, criteria and tests."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import argparse, dpp
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("root", nargs="?", default=".", help="project docs folder or example (default: .)")
+    ap.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    a = ap.parse_args()
+    r = dpp.Report()
+    defs, refs = dpp.check_traceability(a.root, r)
+    print(f"{len(defs)} ids defined, {len(refs)} distinct ids referenced")
+    sys.exit(r.finish("check-traceability", a.strict))
+
+main()

@@ -1,0 +1,21 @@
+{
+  "solo": {
+    "description": "About 14 core documents for one or two people. Add more with --also.",
+    "include": [
+      "product-brief", "goals-and-metrics", "prd", "user-stories", "non-functional-requirements",
+      "architecture-overview", "risk-register", "test-strategy", "release-plan", "planning-readiness-review",
+      "persona", "mvp-and-prioritization", "user-flow", "decision-log"
+    ],
+    "tiers": []
+  },
+  "team": {
+    "description": "All mandatory and recommended documents (about 55).",
+    "include": [],
+    "tiers": ["mandatory", "recommended"]
+  },
+  "enterprise": {
+    "description": "Everything universal: mandatory, recommended and optional documents.",
+    "include": [],
+    "tiers": ["mandatory", "recommended", "optional"]
+  }
+}

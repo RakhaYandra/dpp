@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+"""Validate frontmatter of framework documents: required fields, enums, ids, dependency stems."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import argparse, dpp
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("root", nargs="?", default=".", help="repository or project docs folder (default: .)")
+    ap.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    a = ap.parse_args()
+    r = dpp.Report()
+    known = {x["_stem"] for x in dpp.collect_catalog(dpp.framework_root())}
+    dpp.validate_metadata(a.root, r, known_stems=None if os.path.abspath(a.root) == dpp.framework_root() else known)
+    sys.exit(r.finish("validate-metadata", a.strict))
+
+main()

@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+"""Remove the About block and guidance (and optionally example) blockquotes from templates in a folder."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import argparse, dpp
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("root", help="folder with documents to clean (edited in place)")
+    ap.add_argument("--examples", action="store_true", help="also remove > *Example...* blockquotes")
+    ap.add_argument("--dry-run", action="store_true")
+    a = ap.parse_args()
+    n = 0
+    for path, rel in dpp.iter_markdown(a.root):
+        t = dpp.read(path)
+        if dpp.parse_frontmatter(t) is None:
+            continue
+        new = dpp.strip_guidance(t, a.examples)
+        if new != t:
+            n += 1
+            print(("would clean " if a.dry_run else "cleaned ") + rel)
+            if not a.dry_run:
+                open(path, "w", encoding="utf-8").write(new)
+    print(f"strip-guidance: {n} file(s) changed")
+
+main()

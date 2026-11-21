@@ -1,0 +1,64 @@
+name: Propose a new template or package
+description: Suggest a document that is missing from the framework.
+labels: ["proposal", "new-template"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you! Please check that no existing template already covers this (see `guides/document-map.md`). New templates must justify their existence: the framework favours fewer, connected documents.
+  - type: input
+    id: name
+    attributes:
+      label: Proposed template name
+      placeholder: e.g. data-migration-plan
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision or risk it addresses
+      description: What hard-to-reverse decision or recurring failure does this document prevent? Who owns it?
+    validations:
+      required: true
+  - type: textarea
+    id: why-not-existing
+    attributes:
+      label: Why no existing template covers it
+      description: Name the closest template(s) and explain why a section there would not be enough.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Where does it belong?
+      options:
+        - Universal (a domain folder)
+        - Package (product-type-specific)
+        - New package
+    validations:
+      required: true
+  - type: input
+    id: types
+    attributes:
+      label: Product types it applies to
+      placeholder: all / saas / mobile / api-platform / enterprise / developer-tools / other
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Suggested tier
+      options: [mandatory, recommended, optional, package]
+    validations:
+      required: true
+  - type: input
+    id: deps
+    attributes:
+      label: Depends on / feeds (document names)
+  - type: textarea
+    id: outline
+    attributes:
+      label: Outline of main sections
+  - type: textarea
+    id: sources
+    attributes:
+      label: Evidence from practice
+      description: Real-world experience or published good practice (links). Please do not paste copyrighted text.

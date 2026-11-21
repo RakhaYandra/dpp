@@ -1,0 +1,20 @@
+name: Report a bug in scripts or links
+description: A validation or scaffolding script misbehaves, or a link or diagram is broken.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include the command you ran and the output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: OS, Python version

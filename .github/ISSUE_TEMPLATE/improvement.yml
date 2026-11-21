@@ -1,0 +1,42 @@
+name: Improve or correct a template
+description: Unclear guidance, missing section, inconsistency between documents, or a better example.
+labels: ["improvement"]
+body:
+  - type: input
+    id: doc
+    attributes:
+      label: Document(s) affected
+      placeholder: templates/03-requirements/prd.md
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem?
+      options:
+        - Unclear or misleading guidance
+        - Missing section or criterion
+        - Inconsistency between documents
+        - Duplicate content
+        - Example is unrealistic
+        - Technology bias
+        - Questionable legal/standards statement
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing?
+      description: Quote or point to the section. What happened when you used it?
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested change
+  - type: textarea
+    id: context
+    attributes:
+      label: Your context
+      description: Product type, team size, profile (solo / team / enterprise). Optional but helpful.

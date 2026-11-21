@@ -1,0 +1,31 @@
+name: Validate framework
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Validate metadata
+        run: python3 scripts/validate-metadata .
+      - name: Check links
+        run: python3 scripts/check-links .
+      - name: Document map is up to date
+        run: python3 scripts/generate-document-map --check
+      - name: Traceability of the worked example
+        run: python3 scripts/check-traceability examples/slotwise
+      - name: Scaffold smoke test
+        run: |
+          python3 scripts/scaffold --profile team --types saas,api-platform --out "$RUNNER_TEMP/project" --strip-guidance
+          python3 scripts/validate-metadata "$RUNNER_TEMP/project"
+          python3 scripts/check-links "$RUNNER_TEMP/project"

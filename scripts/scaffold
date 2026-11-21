@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+"""Create a project docs folder from the templates, sized by profile and product types."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import argparse, dpp
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--profile", default="team", choices=sorted(dpp.load_profiles()))
+    ap.add_argument("--types", default="", help="comma list: saas,mobile,api-platform,enterprise,internal,developer-tools,web")
+    ap.add_argument("--also", default="", help="comma list of extra document names to include (e.g. data-model,api-specification)")
+    ap.add_argument("--out", required=True, help="output folder (created; must be empty or new)")
+    ap.add_argument("--strip-guidance", action="store_true", help="remove About blocks and guidance")
+    ap.add_argument("--examples", action="store_true", help="with --strip-guidance, also remove example blockquotes")
+    ap.add_argument("--framework-url", default="https://github.com/OWNER/digital-product-planning-framework/blob/main/",
+                    help="base URL used for links back to guides in the framework repo")
+    a = ap.parse_args()
+    if os.path.exists(a.out) and os.listdir(a.out):
+        sys.exit(f"scaffold: output folder {a.out} is not empty")
+    pk = set()
+    for t in [x.strip() for x in a.types.split(",") if x.strip()]:
+        if t not in dpp.TYPE_TO_PACKAGE:
+            sys.exit(f"scaffold: unknown product type {t!r}")
+        if dpp.TYPE_TO_PACKAGE[t]:
+            pk.add(dpp.TYPE_TO_PACKAGE[t])
+    also = {x.strip() for x in a.also.split(",") if x.strip()}
+    n = dpp.scaffold(dpp.framework_root(), a.out, a.profile, pk, a.strip_guidance, a.examples, a.framework_url, also)
+    print(f"scaffold: wrote {n} documents plus the manifest to {a.out} (profile={a.profile}, packages={sorted(pk) or "none"})")
+
+main()

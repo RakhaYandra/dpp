@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+"""Regenerate the catalog and counts in guides/document-map.md from template frontmatter."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import argparse, dpp
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--check", action="store_true", help="exit 1 if the file is out of date; do not write")
+    a = ap.parse_args()
+    ok = dpp.update_document_map(dpp.framework_root(), check_only=a.check)
+    if a.check:
+        print("document-map: up to date" if ok else "document-map: OUT OF DATE (run scripts/generate-document-map)")
+        sys.exit(0 if ok else 1)
+    print("document-map: regenerated")
+
+main()
