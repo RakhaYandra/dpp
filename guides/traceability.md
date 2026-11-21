@@ -19,6 +19,13 @@ Traceability answers three questions: *Why does this exist?* (upward), *Is it bu
 | `F-` | Research finding | User Research | F-03 |
 | `C-` | Candidate feature (pre-requirement) | MVP & Prioritization | C-02 |
 | `MON-` | Monitoring rule / alert | Observability Strategy | MON-01 |
+| `UF-` | User flow | User Flow | UF-01 |
+| `S-` | Screen | Information Architecture (sitemap) / Wireframe Spec | S-03 |
+| `I-` | Content or function inventory item | Information Architecture | I-02 |
+| `M-` | Message / copy catalog entry | Wireframe Spec | M-12 |
+| `PR-` | Prototype review finding | Prototype Review | PR-01 |
+| `API-` | API operation | API Specification | API-002 |
+| `INT-` | External integration | Integration Specification | INT-01 |
 | `ASM-` | Assumption | Assumption Map / PRD | ASM-03 |
 | `CON-` | Constraint | PRD | CON-02 |
 | `FR-` | Functional requirement (epic level) | PRD | FR-012 |
