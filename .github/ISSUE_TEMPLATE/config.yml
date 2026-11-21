@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Questions and ideas
-    url: https://github.com/OWNER/digital-product-planning-framework/discussions
+    url: https://github.com/RakhaYandra/dpp/discussions
     about: Ask how to use the framework, or discuss ideas before proposing a change.
