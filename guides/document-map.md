@@ -225,22 +225,22 @@ Phases overlap; do not wait for perfection. Work **breadth-first**: draft the ma
 
 | Document | Applies to | Owner | Depends on |
 |---|---|---|---|
-| [Audit Logging Requirements](../packages/enterprise/audit-logging.md) | enterprise, saas | security-lead | security-requirements, access-control-matrix, observability-strategy |
-| [Change Management and Training](../packages/enterprise/change-management-and-training.md) | enterprise | product-manager | persona, release-plan, communication-plan |
-| [Data Governance](../packages/enterprise/data-governance.md) | enterprise, saas | data-owner | data-classification, privacy-requirements, data-model |
-| [Enterprise Integration](../packages/enterprise/enterprise-integration.md) | enterprise | engineering-lead | integration-specification, authentication-authorization, architecture-overview |
-| [Developer Experience (DX) Plan](../packages/developer-tools/developer-experience.md) | developer-tools, api-platform | product-manager | prd, persona, api-specification |
-| [Distribution and Compatibility](../packages/developer-tools/distribution-and-compatibility.md) | developer-tools | engineering-lead | architecture-overview, technology-stack, non-functional-requirements |
-| [Multi-Tenancy and Tenant Isolation](../packages/saas/multi-tenancy-and-isolation.md) | saas | engineering-lead | architecture-overview, data-model, security-requirements |
-| [Subscription and Billing Requirements](../packages/saas/subscription-and-billing.md) | saas | product-manager | business-model, prd |
-| [Usage Metering](../packages/saas/usage-metering.md) | saas | product-manager | subscription-and-billing, multi-tenancy-and-isolation, data-model |
 | [API Lifecycle and Versioning](../packages/api-platform/api-lifecycle-and-versioning.md) | api-platform, mobile, saas | engineering-lead | api-specification, architecture-overview |
 | [API Consumer Authentication Strategy](../packages/api-platform/consumer-authentication.md) | api-platform | security-lead | authentication-authorization, api-specification, security-requirements |
 | [Rate Limiting and Quotas](../packages/api-platform/rate-limiting-and-quotas.md) | api-platform, saas | engineering-lead | api-specification, non-functional-requirements, infrastructure-and-scalability |
 | [Webhook Specification](../packages/api-platform/webhook-specification.md) | api-platform, saas | engineering-lead | api-specification, consumer-authentication |
+| [Developer Experience (DX) Plan](../packages/developer-tools/developer-experience.md) | developer-tools, api-platform | product-manager | prd, persona, api-specification |
+| [Distribution and Compatibility](../packages/developer-tools/distribution-and-compatibility.md) | developer-tools | engineering-lead | architecture-overview, technology-stack, non-functional-requirements |
+| [Audit Logging Requirements](../packages/enterprise/audit-logging.md) | enterprise, saas | security-lead | security-requirements, access-control-matrix, observability-strategy |
+| [Change Management and Training](../packages/enterprise/change-management-and-training.md) | enterprise | product-manager | persona, release-plan, communication-plan |
+| [Data Governance](../packages/enterprise/data-governance.md) | enterprise, saas | data-owner | data-classification, privacy-requirements, data-model |
+| [Enterprise Integration](../packages/enterprise/enterprise-integration.md) | enterprise | engineering-lead | integration-specification, authentication-authorization, architecture-overview |
 | [App Store Release Requirements](../packages/mobile/app-store-release.md) | mobile | product-manager | platform-and-device-support, release-plan, privacy-requirements |
 | [Offline Capabilities and Data Sync](../packages/mobile/offline-and-sync.md) | mobile | engineering-lead | architecture-overview, data-model, platform-and-device-support |
 | [Platform and Device Support](../packages/mobile/platform-and-device-support.md) | mobile | product-manager | prd, non-functional-requirements |
 | [Push Notification Strategy](../packages/mobile/push-notifications.md) | mobile | product-manager | prd, platform-and-device-support, privacy-requirements |
+| [Multi-Tenancy and Tenant Isolation](../packages/saas/multi-tenancy-and-isolation.md) | saas | engineering-lead | architecture-overview, data-model, security-requirements |
+| [Subscription and Billing Requirements](../packages/saas/subscription-and-billing.md) | saas | product-manager | business-model, prd |
+| [Usage Metering](../packages/saas/usage-metering.md) | saas | product-manager | subscription-and-billing, multi-tenancy-and-isolation, data-model |
 
 *Also in `00-foundation`: [project-manifest.yaml](../templates/00-foundation/project-manifest.yaml), the register of which documents your project uses.*
