@@ -6,6 +6,7 @@ All notable changes to this project are recorded here. The project follows [sema
 
 ### Added
 - UI Design and Interactive Prototype template in `04-ux-ui`, with a self-contained HTML prototype starter. The scaffold copies both for solo, team and enterprise profiles.
+- `scripts/export-pdf`, which combines a documentation tree into one PDF with a cover, table of contents and rendered Mermaid diagrams.
 
 ### Changed
 - Prototype Review now uses the UI design document and its prototype artefact as required inputs.
