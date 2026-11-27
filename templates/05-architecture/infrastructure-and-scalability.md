@@ -55,12 +55,13 @@ applies_to: [all]
 
 ```mermaid
 flowchart TB
-  User --> Edge[Edge / CDN / WAF]
-  Edge --> App[Application tier (multi-zone)]
-  App --> Cache[(Cache)]
-  App --> DB[(Primary data store)]
-  DB --> Replica[(Replica / standby)]
-  App --> Queue[[Queue]] --> Worker[Workers]
+  User --> Edge["Edge / CDN / WAF"]
+  Edge --> App["Application tier (multi-zone)"]
+  App --> Cache[("Cache")]
+  App --> DB[("Primary data store")]
+  DB --> Replica[("Replica / standby")]
+  App --> Queue[["Queue"]]
+  Queue --> Worker["Workers"]
 ```
 
 ## 3. Capacity Model

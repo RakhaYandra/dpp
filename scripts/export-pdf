@@ -1,0 +1,254 @@
+#!/usr/bin/env python3
+"""Combine a documentation tree into one PDF with a cover and a table of contents."""
+import argparse
+import datetime
+import glob
+import html
+import os
+import re
+import shlex
+import shutil
+import subprocess
+import sys
+import tempfile
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import dpp
+
+MERMAID_FENCE = re.compile(r"^```mermaid[ \t]*\n(.*?)^```[ \t]*$", re.S | re.M)
+MERMAID_PLACEHOLDER = "<!-- EXPORT-PDF-MERMAID-{} -->"
+PLACEHOLDER_BLOCK = re.compile(r"<p>\s*<!-- EXPORT-PDF-MERMAID-(\d+) -->\s*</p>")
+PLACEHOLDER_INLINE = re.compile(r"<!-- EXPORT-PDF-MERMAID-(\d+) -->")
+BODY_RE = re.compile(r"<body>(.*)</body>", re.S)
+HREF_RE = re.compile(r'href="([^"]+)"')
+
+CSS = """
+@page { size: A4; margin: 18mm 16mm; }
+body { font: 10.5pt/1.5 system-ui, sans-serif; color: #1a1a18; }
+.cover { page-break-after: always; padding-top: 45mm; }
+.cover h1 { font-size: 30pt; margin: 0 0 8pt; }
+.cover .sub { font-size: 14pt; color: #55534c; }
+.cover .meta { margin-top: 24mm; font-size: 10pt; color: #55534c; }
+.toc { page-break-after: always; }
+.toc h1 { font-size: 20pt; }
+.toc h2 { font-size: 12pt; margin-top: 18pt; color: #1f4e3d; }
+.toc ul { list-style: none; padding-left: 0; }
+.toc li { margin: 3pt 0; }
+.toc a { color: #1a1a18; text-decoration: none; }
+.doc { page-break-before: always; }
+.doc:first-of-type { page-break-before: avoid; }
+h1 { font-size: 18pt; border-bottom: 1px solid #d5d3ca; padding-bottom: 6pt; }
+h2 { font-size: 14pt; margin-top: 20pt; }
+h3 { font-size: 11.5pt; }
+table { border-collapse: collapse; width: 100%; font-size: 9pt; }
+th, td { border: 1px solid #d5d3ca; padding: 4pt 6pt; text-align: left; vertical-align: top; }
+th { background: #f7f6f2; }
+pre, code { font-family: ui-monospace, monospace; font-size: 8.5pt; }
+pre { white-space: pre-wrap; word-break: break-word; background: #f7f6f2; padding: 8pt; }
+pre.mermaid { background: none; text-align: center; }
+pre.mermaid svg { max-width: 100%; height: auto; }
+details { margin: 10pt 0; }
+blockquote { margin: 8pt 0; padding-left: 10pt; border-left: 2px solid #d5d3ca; color: #55534c; }
+a { color: #1f4e3d; }
+"""
+
+
+def ordered_docs(root):
+    found = []
+    for dp, dn, fs in os.walk(root):
+        dn[:] = sorted(d for d in dn if not d.startswith(".") and d != "exports")
+        for f in sorted(fs):
+            if not f.endswith(".md"):
+                continue
+            rel = os.path.relpath(os.path.join(dp, f), root)
+            folder = rel.split(os.sep)[0] if os.sep in rel else ""
+            found.append((folder, rel))
+
+    def key(item):
+        folder, rel = item
+        match = re.match(r"^(\d+)-", folder)
+        if match:
+            return (0, int(match.group(1)), folder, rel)
+        return (1, 0, folder, rel)
+
+    return sorted(found, key=key)
+
+
+def manifest_value(root, field):
+    path = os.path.join(root, "00-foundation", "project-manifest.yaml")
+    if not os.path.exists(path):
+        return None
+    text = dpp.read(path)
+    match = re.search(r"^project:\s*$", text, re.M)
+    if not match:
+        return None
+    block = text[match.end():]
+    end = re.search(r"^\S", block, re.M)
+    if end:
+        block = block[:end.start()]
+    value = re.search(r"^\s*%s:\s*([^\n]+)$" % re.escape(field), block, re.M)
+    if not value:
+        return None
+    return re.sub(r"\s+#.*$", "", value.group(1)).strip().strip("\"'")
+
+
+def doc_title(path, rel):
+    fm = dpp.parse_frontmatter(dpp.read(path)) or {}
+    if fm.get("title"):
+        return fm["title"]
+    for line in dpp.read(path).splitlines():
+        if line.startswith("# "):
+            return line[2:].strip()
+    return os.path.basename(rel)[:-3]
+
+
+def pandoc_command():
+    raw = os.environ.get("PANDOC", "pandoc")
+    return shlex.split(raw) + [
+        "--from=gfm+raw_html", "--to=html5", "--standalone",
+        "--syntax-highlighting=none", "--wrap=none",
+    ]
+
+
+def find_chrome():
+    override = os.environ.get("CHROME_PATH")
+    if override:
+        return override
+    for name in ("chromium", "chromium-browser", "google-chrome"):
+        found = shutil.which(name)
+        if found:
+            return found
+    candidates = sorted(glob.glob(os.path.expanduser("~/.cache/ms-playwright/chromium-*/chrome-linux64/chrome")))
+    return candidates[-1] if candidates else None
+
+
+def render_body(text, workdir, placeholders):
+    def stash(match):
+        index = len(placeholders)
+        placeholders.append(match.group(1))
+        return MERMAID_PLACEHOLDER.format(index)
+
+    text = MERMAID_FENCE.sub(stash, text)
+    source = os.path.join(workdir, "doc.md")
+    target = os.path.join(workdir, "doc.html")
+    with open(source, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    subprocess.run(pandoc_command() + [source, "-o", target], check=True,
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    rendered = dpp.read(target)
+    body = BODY_RE.search(rendered)
+    body = body.group(1) if body else rendered
+
+    def restore(match):
+        return "<pre class=\"mermaid\">%s</pre>" % html.escape(placeholders[int(match.group(1))])
+
+    body = PLACEHOLDER_BLOCK.sub(restore, body)
+    body = PLACEHOLDER_INLINE.sub(restore, body)
+    return body
+
+
+def rewrite_links(body, rel, anchors):
+    base = os.path.dirname(rel)
+
+    def replace(match):
+        target = match.group(1)
+        if target.startswith(("http:", "https:", "mailto:", "#")):
+            return match.group(0)
+        path = target.split("#")[0]
+        if not path.endswith(".md"):
+            return match.group(0)
+        full = os.path.normpath(os.path.join(base, path)) if base else path
+        if full not in anchors:
+            return match.group(0)
+        suffix = "#" + target.split("#")[1] if "#" in target else ""
+        return 'href="#%s%s"' % (anchors[full], suffix)
+
+    return HREF_RE.sub(replace, body)
+
+
+def build_html(root, docs, title, strip):
+    bodies = []
+    anchors = {rel: "doc-%d" % (i + 1) for i, (_, rel) in enumerate(docs)}
+    groups = {}
+    with tempfile.TemporaryDirectory(prefix="export-pdf-") as workdir:
+        for index, (folder, rel) in enumerate(docs):
+            path = os.path.join(root, rel)
+            text = dpp.read(path)
+            fm = dpp.parse_frontmatter(text) or {}
+            text = dpp.FM_RE.sub("", text, count=1)
+            if strip:
+                text = dpp.strip_guidance(text, examples=False)
+            body = rewrite_links(render_body(text, workdir, []), rel, anchors)
+            bodies.append('<section class="doc" id="%s">%s</section>' % (anchors[rel], body))
+            label = dpp.DOMAIN_NAMES.get(folder, folder if folder else "Root")
+            groups.setdefault(label, []).append((doc_title(path, rel), anchors[rel]))
+
+    toc = ['<section class="toc"><h1>Daftar Isi</h1>']
+    for label, entries in groups.items():
+        toc.append("<h2>%s</h2><ul>" % html.escape(label))
+        for name, anchor in entries:
+            toc.append('<li><a href="#%s">%s</a></li>' % (anchor, html.escape(name)))
+        toc.append("</ul>")
+    toc.append("</section>")
+
+    meta = [datetime.date.today().isoformat()]
+    for field, label in (("profile", "Profile"), ("owner", "Owner")):
+        value = manifest_value(root, field)
+        if value:
+            meta.append("%s: %s" % (label, html.escape(value)))
+
+    return """<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>{title}</title><style>{css}</style></head>
+<body>
+<section class="cover"><h1>{title}</h1><p class="sub">Digital Product Planning Documents</p><p class="meta">{meta}</p></section>
+{toc}
+{bodies}
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({{startOnLoad: true, securityLevel: 'loose'}});</script>
+</body></html>
+""".format(title=html.escape(title), css=CSS, meta=" · ".join(meta),
+           toc="\n".join(toc), bodies="\n".join(bodies))
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--root", default=".", help="folder containing the documentation tree")
+    ap.add_argument("--out", help="output PDF path, default exports/<title>.pdf")
+    ap.add_argument("--title", help="cover title, overrides the project manifest")
+    ap.add_argument("--strip-guidance", action="store_true", help="omit About blocks and guidance")
+    args = ap.parse_args()
+
+    root = os.path.abspath(args.root)
+    if not os.path.isdir(root):
+        sys.exit("export-pdf: root is not a directory: %s" % root)
+    docs = ordered_docs(root)
+    if not docs:
+        sys.exit("export-pdf: no Markdown documents found in %s" % root)
+
+    title = args.title or manifest_value(root, "name") or os.path.basename(root)
+    slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-") or "documents"
+    out = os.path.abspath(args.out or os.path.join("exports", slug + ".pdf"))
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+
+    chrome = find_chrome()
+    if not chrome:
+        sys.exit("export-pdf: Chromium not found. Set CHROME_PATH.")
+
+    with tempfile.TemporaryDirectory(prefix="export-pdf-") as workdir:
+        html_path = os.path.join(workdir, "document.html")
+        with open(html_path, "w", encoding="utf-8") as fh:
+            fh.write(build_html(root, docs, title, args.strip_guidance))
+        command = [
+            chrome, "--headless=new", "--no-sandbox", "--disable-gpu",
+            "--disable-dev-shm-usage", "--no-pdf-header-footer",
+            "--virtual-time-budget=20000", "--print-to-pdf=" + out,
+            "file://" + html_path,
+        ]
+        subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    print("export-pdf: wrote %s from %d documents" % (out, len(docs)))
+
+
+if __name__ == "__main__":
+    main()
