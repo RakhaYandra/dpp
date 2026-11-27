@@ -9,7 +9,7 @@ owner: designer
 contributors: [product-manager, engineering-lead, qa-lead, ux-researcher]
 created: YYYY-MM-DD
 last_updated: YYYY-MM-DD
-depends_on: [wireframe-spec, user-flow]
+depends_on: [ui-design, wireframe-spec, user-flow]
 feeds: [user-stories, wireframe-spec, design-system, test-scenarios]
 applies_to: [all]
 ---
@@ -24,7 +24,7 @@ applies_to: [all]
 | **Purpose** | Records a structured review of a prototype by stakeholders and users: what was reviewed, how, what was found, and what will change. Use one copy per review round. |
 | **When to use** | Before development of a flow or feature, whenever a clickable or realistic prototype exists. Skip for trivial screens. |
 | **Owner** | UX Designer. |
-| **Required inputs** | A prototype link; [Wireframe Spec](wireframe-spec.md); [User Flow](user-flow.md); target tasks from [User Stories](../03-requirements/user-stories.md). |
+| **Required inputs** | [UI Design](ui-design.md) and its `ui-prototype.html` artefact; [Wireframe Spec](wireframe-spec.md); [User Flow](user-flow.md); target tasks from [User Stories](../03-requirements/user-stories.md). |
 | **Related documents** | [User Research](../01-discovery/user-research.md) (usability study method) · [Design System](design-system.md) · [Accessibility & Responsive](accessibility-and-responsive.md) |
 
 </details>
@@ -35,7 +35,8 @@ applies_to: [all]
 
 | | |
 |---|---|
-| **Prototype / version / link** | |
+| **Prototype / version / link** | [Version; path to ui-prototype.html or design tool link] |
+| **UI design reference** | [Section 2 screen IDs from UI Design] |
 | **Fidelity and scope** | [Low/high; flows covered: UF-01] |
 | **Review type** | ☐ Stakeholder ☐ Moderated user test ☐ Unmoderated test ☐ Heuristic / expert review ☐ Accessibility review |
 | **Date, participants** | [Roles/IDs; number] |
@@ -76,5 +77,5 @@ Severity guide: **Critical** blocks task completion · **Major** causes signific
 - [ ] Scope, participants and questions are stated.
 - [ ] Tasks have measurable success criteria and recorded results.
 - [ ] Every finding has severity, a decision and an owner.
-- [ ] Critical and Major findings lead to updates in the wireframe spec, flows or stories.
+- [ ] Critical and Major findings lead to updates in the UI design, wireframe spec, flows or stories.
 - [ ] A go / rework decision is recorded.

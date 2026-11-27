@@ -43,7 +43,7 @@ Universal templates apply to all. Optional [packages](packages/) add documents f
 │   ├── 01-discovery/        brief, personas, research, competitors, assumptions
 │   ├── 02-strategy/         vision, goals & metrics, business model, MVP, roadmap
 │   ├── 03-requirements/     PRD, NFRs, user stories, business rules, traceability
-│   ├── 04-ux-ui/            IA, flows, wireframes, design system, accessibility
+│   ├── 04-ux-ui/            IA, flows, UI design + prototype, wireframes, design system, a11y
 │   ├── 05-architecture/     overview, ADRs, data, APIs, security design, infrastructure
 │   ├── 06-project-mgmt/     charter, milestones, risks, working agreements
 │   ├── 07-quality/          test strategy, plans, scenarios, UAT
@@ -57,7 +57,7 @@ Universal templates apply to all. Optional [packages](packages/) add documents f
 └── .github/                 issue forms, pull-request template, validation workflow
 ```
 
-**71 universal templates** (10 mandatory, 44 recommended, 17 optional), **17 package templates** and a project manifest.
+**72 universal templates** (10 mandatory, 45 recommended, 17 optional), **17 package templates** and a project manifest. Every profile also receives the UI design template and its HTML prototype starter.
 
 ## How to use it
 

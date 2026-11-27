@@ -16,7 +16,7 @@ This guide shows **which documents exist, how important each is, and what depend
 | Tier | Meaning | Count |
 |---|---|---|
 | **Mandatory** | Needed for almost every product before building starts. Skip only with a written reason. | 10 |
-| **Recommended** | Strongly advised for teams and for products of meaningful size or risk. Solo and small projects pick the ones they need. | 44 |
+| **Recommended** | Strongly advised for teams and for products of meaningful size or risk. Solo and small projects pick the ones they need. | 45 |
 | **Optional** | Valuable in specific situations. Create when the trigger described in the template's *When to use* applies. | 17 |
 | **Package** | Product-type-specific documents in `packages/`. Create when your product type matches. | 17 |
 
@@ -83,7 +83,7 @@ flowchart LR
 | **A. Discover** | Understand the problem and people | Product Brief → Assumption Map → User Research → Persona → Competitor Analysis (→ Market Research, Opportunity Assessment if needed) | Brief is clear; top assumptions have tests |
 | **B. Define strategy** | Decide direction and success | Vision & Value Proposition → Goals & Metrics → Business Model → MVP & Prioritization → Roadmap | Every goal has a metric; MVP hypothesis stated |
 | **C. Specify** | State what will be built | PRD → NFRs → Business Rules → User Stories → (Use Cases) → RTM | Must requirements have stories and criteria |
-| **D. Design and architect** | Decide how it works and looks | Information Architecture → User Flow → Wireframe Spec → Architecture Overview → ADRs → Data Model → API Specification → Auth design → Infrastructure → Tech Stack; Design System & Accessibility alongside | Drivers trace to requirements; key decisions recorded |
+| **D. Design and architect** | Decide how it works and looks | Information Architecture → User Flow → Wireframe Spec → UI Design and HTML Prototype → Architecture Overview → ADRs → Data Model → API Specification → Auth design → Infrastructure → Tech Stack; Design System & Accessibility alongside | Drivers trace to requirements; key decisions recorded |
 | **E. Secure** | Identify and mitigate threats | Data Classification → Privacy Requirements → Threat Model → Security Requirements → Access Control Matrix (→ Compliance Assessment) | Threats have mitigations; data is classified |
 | **F. Plan delivery and quality** | Prepare to build and verify | Project Charter → Milestone Plan → Working Agreements → Test Strategy → Test Plan → Test Scenarios (→ Performance/Security/UAT plans) | Test strategy agreed; milestones have exit criteria |
 | **G. Prepare release and operations** | Prepare to run it | Environment Strategy → Deployment Plan → Release Plan → Observability → Incident Mgmt → Backup & Recovery → Operational Readiness (→ Launch & Support) | Rollback and recovery defined |
@@ -143,7 +143,8 @@ Phases overlap; do not wait for perfection. Work **breadth-first**: draft the ma
 | [Accessibility and Responsive Design Guidelines](../templates/04-ux-ui/accessibility-and-responsive.md) | recommended | designer | non-functional-requirements |
 | [Design System and UI Guidelines](../templates/04-ux-ui/design-system.md) | recommended | designer | information-architecture, accessibility-and-responsive |
 | [Information Architecture and Sitemap](../templates/04-ux-ui/information-architecture.md) | recommended | designer | prd, persona |
-| [Prototype Review](../templates/04-ux-ui/prototype-review.md) | optional | designer | wireframe-spec, user-flow |
+| [Prototype Review](../templates/04-ux-ui/prototype-review.md) | optional | designer | ui-design, wireframe-spec, user-flow |
+| [UI Design and Interactive Prototype](../templates/04-ux-ui/ui-design.md) | recommended | designer | prd, persona, information-architecture, user-flow, design-system, accessibility-and-responsive |
 | [User Flow](../templates/04-ux-ui/user-flow.md) | recommended | designer | prd, information-architecture, persona |
 | [Wireframe Specification](../templates/04-ux-ui/wireframe-spec.md) | recommended | designer | user-flow, information-architecture |
 

@@ -1,10 +1,10 @@
 {
   "solo": {
-    "description": "About 14 core documents for one or two people. Add more with --also.",
+    "description": "About 15 core documents for one or two people. Add more with --also.",
     "include": [
       "product-brief", "goals-and-metrics", "prd", "user-stories", "non-functional-requirements",
       "architecture-overview", "risk-register", "test-strategy", "release-plan", "planning-readiness-review",
-      "persona", "mvp-and-prioritization", "user-flow", "decision-log"
+      "persona", "mvp-and-prioritization", "user-flow", "ui-design", "decision-log"
     ],
     "tiers": []
   },

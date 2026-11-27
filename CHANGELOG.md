@@ -4,6 +4,12 @@ All notable changes to this project are recorded here. The project follows [sema
 
 ## [Unreleased]
 
+### Added
+- UI Design and Interactive Prototype template in `04-ux-ui`, with a self-contained HTML prototype starter. The scaffold copies both for solo, team and enterprise profiles.
+
+### Changed
+- Prototype Review now uses the UI design document and its prototype artefact as required inputs.
+
 ## [0.1.0] - Initial release
 
 ### Added
