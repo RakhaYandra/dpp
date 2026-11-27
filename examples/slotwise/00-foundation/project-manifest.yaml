@@ -1,0 +1,84 @@
+# Project Manifest, the register of this project's planning documents.
+#
+# Copy to docs/00-foundation/project-manifest.yaml in your project.
+# Scripts (scaffold, validate-metadata, check-traceability) read this file.
+# Keep it small and current. Template ids are listed in guides/document-map.md.
+
+project:
+  name: "SlotWise"
+  id_prefix: "SLOTWISE"
+  product_types: [saas]
+  profile: team
+  prd_mode: full
+  owner: "product-manager"
+  created: 2026-11-27
+  planning_gate_target: 2026-12-15
+
+packages:
+  - saas
+
+# Document register. One entry per document you decided about.
+# status: not-started | draft | in-review | approved | superseded | archived | not-applicable
+# tier comes from the template (mandatory | recommended | optional | package).
+# If status is not-applicable, give a one-line reason.
+# The 11 approved items are the original worked-example set, including the README.
+# Package documents are selected by the saas package and are not listed in this scaffold register.
+documents:
+  - { doc: decision-log, status: approved }
+  - { doc: glossary, status: draft }
+  - { doc: planning-readiness-review, status: draft }
+  - { doc: assumption-map, status: draft }
+  - { doc: competitor-analysis, status: draft }
+  - { doc: persona, status: draft }
+  - { doc: product-brief, status: approved }
+  - { doc: user-research, status: draft }
+  - { doc: business-model, status: draft }
+  - { doc: goals-and-metrics, status: approved }
+  - { doc: mvp-and-prioritization, status: draft }
+  - { doc: roadmap, status: draft }
+  - { doc: vision-and-value-proposition, status: draft }
+  - { doc: business-rules, status: draft }
+  - { doc: non-functional-requirements, status: approved }
+  - { doc: prd, status: approved }
+  - { doc: requirements-traceability-matrix, status: draft }
+  - { doc: user-stories, status: approved }
+  - { doc: accessibility-and-responsive, status: draft }
+  - { doc: design-system, status: draft }
+  - { doc: information-architecture, status: draft }
+  - { doc: ui-design, status: draft }
+  - { doc: user-flow, status: draft }
+  - { doc: wireframe-spec, status: draft }
+  - { doc: prototype-review, status: draft }
+  - { doc: adr, status: draft }
+  - { doc: api-specification, status: draft }
+  - { doc: architecture-overview, status: approved }
+  - { doc: authentication-authorization, status: draft }
+  - { doc: data-model, status: draft }
+  - { doc: infrastructure-and-scalability, status: draft }
+  - { doc: technology-stack, status: draft }
+  - { doc: milestone-plan, status: draft }
+  - { doc: project-charter, status: draft }
+  - { doc: risk-register, status: approved }
+  - { doc: working-agreements, status: draft }
+  - { doc: test-case, status: draft }
+  - { doc: test-plan, status: draft }
+  - { doc: test-scenarios, status: approved }
+  - { doc: test-strategy, status: draft }
+  - { doc: uat-plan, status: draft }
+  - { doc: access-control-matrix, status: draft }
+  - { doc: data-classification, status: draft }
+  - { doc: privacy-requirements, status: draft }
+  - { doc: security-requirements, status: draft }
+  - { doc: threat-model, status: draft }
+  - { doc: backup-and-recovery, status: draft }
+  - { doc: deployment-plan, status: draft }
+  - { doc: environment-strategy, status: draft }
+  - { doc: incident-management, status: draft }
+  - { doc: observability-strategy, status: draft }
+  - { doc: operational-readiness, status: draft }
+  - { doc: release-plan, status: approved }
+  - { doc: analytics-plan, status: draft }
+  - { doc: event-tracking-plan, status: draft }
+  - { doc: post-launch-review, status: draft }
+  # Example README, outside the scaffold template set but part of the original example.
+  - { doc: readme, status: approved }
