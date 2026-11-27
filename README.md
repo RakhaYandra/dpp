@@ -70,7 +70,7 @@ Universal templates apply to all. Optional [packages](packages/) add documents f
 4. **Connect the documents with IDs** (`GOAL-01`, `FR-001`, `US-001`, `NFR-004`, `TS-020`…). See [traceability](guides/traceability.md).
 5. **Validate.** Run `scripts/validate-metadata`, `scripts/check-links` and `scripts/check-traceability`.
 6. **Hold the readiness gate.** Complete the [Planning Readiness Review](templates/00-foundation/planning-readiness-review.md), then start building with clear, actionable documentation.
-7. **Export a PDF.** Run `scripts/export-pdf --root <docs folder>` for one combined PDF with a cover and table of contents. It writes to `exports/`, which is gitignored. Requires Pandoc and headless Chromium. Use `--title` when there is no project manifest.
+7. **Export a PDF.** Run `scripts/export-pdf --root <docs folder>` for one combined PDF with a cover and table of contents. Output goes to `exports/`; this repository includes generated [SlotWise](exports/slotwise.pdf) and [framework](exports/framework.pdf) PDFs. Requires Pandoc and headless Chromium. Use `--title` when there is no project manifest.
 
 New here? Read the [workflow](guides/planning-workflow.md), skim the [document map](guides/document-map.md), then study the [worked example](examples/slotwise/).
 
