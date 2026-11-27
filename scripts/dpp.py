@@ -39,7 +39,7 @@ def iter_markdown(root, subdirs=None):
     bases = [os.path.join(root, s) for s in subdirs] if subdirs else [root]
     for base in bases:
         for dp, dn, fs in os.walk(base):
-            dn[:] = [d for d in dn if not d.startswith(".") and d not in ("node_modules",)]
+            dn[:] = sorted(d for d in dn if not d.startswith(".") and d not in ("node_modules",))
             for f in sorted(fs):
                 if f.endswith(".md"):
                     p = os.path.join(dp, f)

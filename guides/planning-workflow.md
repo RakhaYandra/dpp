@@ -52,7 +52,7 @@ flowchart TD
 
 Work in parallel, with regular check-ins, since they constrain each other:
 
-- **UX:** Information Architecture → User Flow → Wireframe Spec; Design System and Accessibility guidelines; Prototype Review before locking designs.
+- **UX:** Information Architecture → User Flow → Wireframe Spec → UI Design and HTML Prototype; Design System and Accessibility guidelines; Prototype Review before locking designs.
 - **Architecture:** Architecture Overview (drivers first) → ADRs for significant choices → Data Model → API Specification → Authentication & Authorization → Infrastructure & Scalability → Technology Stack.
 - **Security and privacy:** Data Classification → Privacy Requirements → Threat Model (using the architecture's trust boundaries) → Security Requirements → Access Control Matrix.
 - **Packages:** add those that match your product type at the point they constrain design (multi-tenancy and offline sync early; billing and app-store release later).

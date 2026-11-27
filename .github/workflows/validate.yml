@@ -29,3 +29,4 @@ jobs:
           python3 scripts/scaffold --profile team --types saas,api-platform --out "$RUNNER_TEMP/project" --strip-guidance
           python3 scripts/validate-metadata "$RUNNER_TEMP/project"
           python3 scripts/check-links "$RUNNER_TEMP/project"
+          test -f "$RUNNER_TEMP/project/04-ux-ui/ui-prototype.html"
