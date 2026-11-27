@@ -88,6 +88,15 @@ Repeat this block for every screen in the inventory.
 | Status | Starter, not production code. Every value in brackets is a placeholder. |
 | Open it | Open the file in a browser. No server is required. |
 
+Starter choices and reasons:
+
+| Choice | Reason |
+|---|---|
+| Neutral surface with one accent | The starter must fit any product. The accent marks the primary action only. |
+| System UI type stack | No external font dependency, and text stays readable at 200% zoom. |
+| List, detail and form screens | These shapes expose states and feedback without assuming a product-specific shell. |
+| Motion limited to hover and focus | Review should focus on decisions, not animation. |
+
 Before review:
 
 - [ ] Replace `[PRODUCT NAME]` and every screen label with real product language.
