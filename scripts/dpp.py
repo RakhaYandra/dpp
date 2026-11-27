@@ -344,6 +344,7 @@ TYPE_TO_PACKAGE = {
     "saas": "saas", "mobile": "mobile", "api-platform": "api-platform", "api": "api-platform",
     "enterprise": "enterprise", "internal": "enterprise", "developer-tools": "developer-tools", "web": None, "other": None,
 }
+UI_PROTOTYPE_ASSET = "04-ux-ui/ui-prototype.html"
 
 
 def select_documents(fw_root, profile, packages):
@@ -395,6 +396,14 @@ def scaffold(fw_root, out, profile, packages, strip=False, examples=False, frame
         with open(dst, "w", encoding="utf-8") as fh:
             fh.write(text)
         count += 1
+    if any(r["_stem"] == "ui-design" for r in chosen):
+        src = os.path.join(fw_root, "templates", UI_PROTOTYPE_ASSET)
+        dst = os.path.join(out, UI_PROTOTYPE_ASSET)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        with open(src, encoding="utf-8") as fh:
+            prototype = fh.read()
+        with open(dst, "w", encoding="utf-8") as fh:
+            fh.write(prototype)
     # manifest
     man_src = os.path.join(fw_root, "templates", "00-foundation", "project-manifest.yaml")
     man_dst = os.path.join(out, "00-foundation", "project-manifest.yaml")
