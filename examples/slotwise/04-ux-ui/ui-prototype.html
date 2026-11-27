@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SlotWise UI prototype</title>
+<style>
+  :root {
+    --surface: #f7f6f2;
+    --surface-raised: #ffffff;
+    --surface-sunken: #ecebe5;
+    --border: #d5d3ca;
+    --border-strong: #8b887d;
+    --text: #1a1a18;
+    --text-muted: #55534c;
+    --text-inverse: #ffffff;
+    --accent: #1f4e3d;
+    --accent-hover: #17392d;
+    --radius: 4px;
+    --space: 16px;
+  }
+
+  :root[data-theme="dark"] {
+    --surface: #171917;
+    --surface-raised: #222521;
+    --surface-sunken: #101210;
+    --border: #3b403a;
+    --border-strong: #8f958b;
+    --text: #f2f1ec;
+    --text-muted: #c2c5bd;
+    --text-inverse: #101210;
+    --accent: #9ad9bb;
+    --accent-hover: #b3e5cc;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  a { color: var(--accent); }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  h2:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--surface-raised);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+
+  .skip-link:focus { left: 8px; top: 8px; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-raised);
+  }
+
+  .bar {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space) 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .name { font-size: 20px; font-weight: 700; }
+
+  nav { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  button {
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface-raised);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  button:hover { background: var(--surface-sunken); }
+
+  button[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  button.primary:hover { background: var(--accent-hover); }
+
+  button[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  h2 { font-size: 24px; line-height: 1.3; margin: 0 0 8px; }
+
+  h3 { font-size: 18px; line-height: 1.4; margin: 0 0 8px; }
+
+  .lede { color: var(--text-muted); max-width: 64ch; margin: 0 0 24px; }
+
+  .panel {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .table-wrap { overflow-x: auto; }
+
+  table { border-collapse: collapse; width: 100%; min-width: 480px; }
+
+  th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th { font-size: 14px; color: var(--text-muted); }
+
+  .tag {
+    display: inline-block;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 2px 8px;
+    font-size: 14px;
+  }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+
+  .field { flex: 1 1 220px; }
+
+  .state-switch { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+  .state-note { margin: 0 0 16px; color: var(--text); }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+  label { display: block; font-weight: 600; margin-bottom: 8px; }
+
+  input,
+  select {
+    width: 100%;
+    max-width: 420px;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface-raised);
+    color: var(--text);
+    font: inherit;
+  }
+
+  input[type="checkbox"] { width: auto; min-height: 0; }
+
+  .checkbox-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 16px; }
+  .checkbox-row label { margin: 0; font-weight: 400; }
+
+  .hint { color: var(--text-muted); font-size: 14px; margin: 4px 0 0; }
+
+  .feedback { min-height: 24px; margin: 16px 0 0; font-weight: 600; }
+
+  .field-error { min-height: 24px; margin: 8px 0 0; font-weight: 600; }
+
+  dl { margin: 0; }
+
+  dt { font-size: 14px; color: var(--text-muted); margin-top: 12px; }
+
+  dd { margin: 0 0 12px; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  footer p { max-width: 1100px; margin: 0 auto; padding: 16px 24px; }
+
+  @media (max-width: 640px) {
+    .bar { padding: 12px 16px; }
+    main { padding: 24px 16px 48px; }
+    .panel { padding: 16px; }
+    .filters { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+<header>
+  <div class="bar">
+    <span class="name">SlotWise</span>
+    <nav aria-label="Lay prototype">
+      <button type="button" data-screen="list" aria-pressed="true">Daftar slot</button>
+      <button type="button" data-screen="detail" aria-pressed="false">Detail booking</button>
+      <button type="button" data-screen="form" aria-pressed="false">Form konfirmasi</button>
+    </nav>
+    <button type="button" id="theme-toggle">Gunakan tema gelap</button>
+  </div>
+</header>
+
+<main id="main">
+  <section id="screen-list" data-panel="list" aria-labelledby="list-title">
+    <h2 id="list-title" tabindex="-1">Daftar slot tersedia</h2>
+    <p class="lede">Pilih layanan dan waktu. Pemesanan tanpa akun.</p>
+    <div class="panel">
+      <div class="filters">
+        <div class="field">
+          <label for="service">Layanan</label>
+          <select id="service">
+            <option value="">[Placeholder: pilih layanan]</option>
+            <option value="placeholder-service">[Placeholder: layanan salon]</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="booking-date">Tanggal</label>
+          <input id="booking-date" type="date">
+        </div>
+      </div>
+
+      <h3>Status tampilan</h3>
+      <div class="state-switch" aria-label="State prototype">
+        <button type="button" data-state="default" aria-pressed="true">Default</button>
+        <button type="button" data-state="loading" aria-pressed="false">Memuat</button>
+        <button type="button" data-state="empty" aria-pressed="false">Kosong</button>
+        <button type="button" data-state="error" aria-pressed="false">Error</button>
+      </div>
+
+      <div data-state-panel="default">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Waktu</th>
+                <th scope="col">Layanan</th>
+                <th scope="col">Status</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>[Placeholder: waktu 1]</td>
+                <td>[Placeholder: layanan salon]</td>
+                <td><span class="tag">Tersedia</span></td>
+                <td><button type="button" class="slot-action" data-slot="1">Lihat detail</button></td>
+              </tr>
+              <tr>
+                <td>[Placeholder: waktu 2]</td>
+                <td>[Placeholder: layanan salon]</td>
+                <td><span class="tag">Tersedia</span></td>
+                <td><button type="button" class="slot-action" data-slot="2">Lihat detail</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div data-state-panel="loading" hidden>
+        <p class="state-note" role="status" tabindex="-1" id="loading-note">Memuat slot untuk tanggal yang dipilih.</p>
+      </div>
+
+      <div data-state-panel="empty" hidden>
+        <p class="state-note" tabindex="-1" id="empty-note">Belum ada slot tersedia untuk tanggal ini. Pilih tanggal lain.</p>
+        <div class="actions">
+          <button type="button" id="change-date">Coba tanggal lain</button>
+        </div>
+      </div>
+
+      <div data-state-panel="error" hidden>
+        <p class="state-note" tabindex="-1" id="error-note">Slot tidak dapat dimuat. Periksa koneksi, lalu coba lagi.</p>
+        <div class="actions">
+          <button type="button" id="retry-load">Coba lagi</button>
+        </div>
+      </div>
+
+      <p class="feedback" id="list-status" role="status"></p>
+    </div>
+  </section>
+
+  <section id="screen-detail" data-panel="detail" aria-labelledby="detail-title" hidden>
+    <h2 id="detail-title" tabindex="-1">Detail booking</h2>
+    <p class="lede">Periksa pilihan sebelum mengisi data.</p>
+    <div class="panel">
+      <dl>
+        <dt>Layanan</dt><dd id="detail-service">[Placeholder: layanan salon]</dd>
+        <dt>Tanggal</dt><dd id="detail-date">[Placeholder: tanggal pilihan]</dd>
+        <dt>Waktu</dt><dd id="detail-time">[Placeholder: waktu pilihan]</dd>
+        <dt>Staf</dt><dd id="detail-staff">[Placeholder: staf salon]</dd>
+        <dt>Durasi</dt><dd id="detail-duration">[Placeholder: durasi layanan]</dd>
+      </dl>
+      <div class="checkbox-row">
+        <input type="checkbox" id="slot-taken-demo">
+        <label for="slot-taken-demo">[Prototype] Simulasikan slot terambil</label>
+      </div>
+      <div class="actions">
+        <button type="button" class="primary" id="to-form">Lanjut ke konfirmasi</button>
+        <button type="button" id="back-to-list">Kembali ke daftar slot</button>
+        <button type="button" id="alt-times" hidden>Lihat waktu terdekat</button>
+      </div>
+      <p class="feedback" id="detail-feedback" role="status"></p>
+    </div>
+  </section>
+
+  <section id="screen-form" data-panel="form" aria-labelledby="form-title" hidden>
+    <h2 id="form-title" tabindex="-1">Form konfirmasi booking</h2>
+    <p class="lede">Isi data kontak agar kami dapat mengirim konfirmasi dan pengingat.</p>
+    <div class="panel">
+      <p id="form-summary">[Placeholder: layanan, tanggal, dan waktu pilihan]</p>
+      <form id="booking-form" novalidate>
+        <div class="field">
+          <label for="customer-name">Nama</label>
+          <input id="customer-name" type="text" autocomplete="name" aria-describedby="name-hint">
+          <p class="hint" id="name-hint">Nama yang ditampilkan ke salon.</p>
+        </div>
+        <div class="field">
+          <label for="customer-contact">Telepon atau email</label>
+          <input id="customer-contact" type="text" aria-describedby="contact-hint contact-error">
+          <p class="hint" id="contact-hint">Pilih salah satu agar kami dapat mengirim pesan.</p>
+          <p class="field-error" id="contact-error"></p>
+        </div>
+        <div class="actions">
+          <button type="submit" class="primary" id="submit-booking">Konfirmasi booking</button>
+          <button type="button" id="back-to-detail">Kembali ke detail</button>
+          <button type="button" id="form-alt-times" hidden>Lihat slot lain</button>
+        </div>
+        <p class="feedback" id="form-feedback" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Draft without direction. Dials: ENERGY 1 / RHYTHM 1 / MOTION 1. SlotWise is a fictional example. All sample values are labelled placeholders.</p>
+</footer>
+
+<script>
+  const screenButtons = document.querySelectorAll("[data-screen]");
+  const screens = document.querySelectorAll("[data-panel]");
+
+  const showScreen = (name) => {
+    const target = document.getElementById("screen-" + name);
+    screens.forEach((screen) => { screen.hidden = screen !== target; });
+    screenButtons.forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.screen === name));
+    });
+    target.querySelector("h2").focus();
+  };
+
+  screenButtons.forEach((button) => {
+    button.addEventListener("click", () => showScreen(button.dataset.screen));
+  });
+
+  const stateButtons = document.querySelectorAll("[data-state]");
+  const statePanels = document.querySelectorAll("[data-state-panel]");
+  const showState = (name) => {
+    statePanels.forEach((panel) => { panel.hidden = panel.dataset.statePanel !== name; });
+    stateButtons.forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.state === name));
+    });
+  };
+
+  stateButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      showState(button.dataset.state);
+      document.getElementById("list-status").textContent = "";
+    });
+  });
+
+  document.getElementById("change-date").addEventListener("click", () => {
+    document.getElementById("booking-date").value = "";
+    showState("default");
+    document.getElementById("list-status").textContent = "Tanggal dibuka kembali. Pilih tanggal di atas, lalu lihat slot.";
+  });
+
+  document.getElementById("retry-load").addEventListener("click", () => {
+    showState("loading");
+    document.getElementById("list-status").textContent = "Mencoba lagi memuat slot.";
+    window.setTimeout(() => {
+      showState("default");
+      document.getElementById("list-status").textContent = "Slot berhasil dimuat.";
+    }, 400);
+  });
+
+  document.querySelectorAll(".slot-action").forEach((button) => {
+    button.addEventListener("click", () => {
+      document.getElementById("detail-time").textContent = button.closest("tr").querySelector("td").textContent;
+      document.getElementById("detail-feedback").textContent = "";
+      document.getElementById("alt-times").hidden = true;
+      showScreen("detail");
+    });
+  });
+
+  const takenDemo = document.getElementById("slot-taken-demo");
+  document.getElementById("to-form").addEventListener("click", () => {
+    if (takenDemo.checked) {
+      document.getElementById("detail-feedback").textContent = "Slot baru saja diambil. Pilih waktu terdekat.";
+      document.getElementById("alt-times").hidden = false;
+      return;
+    }
+    document.getElementById("form-summary").textContent =
+      document.getElementById("detail-service").textContent + ", " +
+      document.getElementById("detail-date").textContent + ", " +
+      document.getElementById("detail-time").textContent;
+    document.getElementById("form-feedback").textContent = "";
+    document.getElementById("contact-error").textContent = "";
+    document.getElementById("form-alt-times").hidden = true;
+    showScreen("form");
+  });
+
+  document.getElementById("back-to-list").addEventListener("click", () => showScreen("list"));
+  document.getElementById("back-to-detail").addEventListener("click", () => showScreen("detail"));
+
+  document.getElementById("alt-times").addEventListener("click", () => {
+    takenDemo.checked = false;
+    document.getElementById("detail-feedback").textContent = "";
+    document.getElementById("alt-times").hidden = true;
+    showState("default");
+    document.getElementById("list-status").textContent = "Pilih waktu terdekat di daftar slot.";
+    showScreen("list");
+  });
+
+  document.getElementById("form-alt-times").addEventListener("click", () => {
+    takenDemo.checked = false;
+    document.getElementById("form-feedback").textContent = "";
+    document.getElementById("contact-error").textContent = "";
+    document.getElementById("form-alt-times").hidden = true;
+    showState("default");
+    showScreen("list");
+  });
+
+  document.getElementById("theme-toggle").addEventListener("click", (event) => {
+    const isDark = document.documentElement.dataset.theme === "dark";
+    document.documentElement.dataset.theme = isDark ? "light" : "dark";
+    event.currentTarget.textContent = isDark ? "Gunakan tema gelap" : "Gunakan tema terang";
+  });
+
+  const form = document.getElementById("booking-form");
+  const nameInput = document.getElementById("customer-name");
+  const contactInput = document.getElementById("customer-contact");
+  const formFeedback = document.getElementById("form-feedback");
+  const contactError = document.getElementById("contact-error");
+  const submitButton = document.getElementById("submit-booking");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (takenDemo.checked) {
+      formFeedback.textContent = "Slot baru saja diambil. Pilih waktu terdekat.";
+      document.getElementById("form-alt-times").hidden = false;
+      return;
+    }
+
+    const name = nameInput.value.trim();
+    const contact = contactInput.value.trim();
+    nameInput.setAttribute("aria-invalid", String(!name));
+    contactInput.setAttribute("aria-invalid", String(!contact));
+    contactError.textContent = contact && !(/@/.test(contact) || /\d/.test(contact))
+      ? "Masukkan nomor telepon atau email yang valid agar kami dapat mengirim pengingat."
+      : "";
+
+    if (!name || !contact || contactError.textContent) {
+      formFeedback.textContent = "Isi nama dan telepon atau email sebelum melanjutkan.";
+      (name ? contactInput : nameInput).focus();
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Mengirim...";
+    formFeedback.textContent = "Mengirim konfirmasi booking.";
+    window.setTimeout(() => {
+      submitButton.disabled = false;
+      submitButton.textContent = "Konfirmasi booking";
+      formFeedback.textContent = "Booking dikonfirmasi. Pesan konfirmasi dan pengingat akan dikirim. Gunakan tautan di pesan untuk mengubah atau membatalkan.";
+    }, 400);
+  });
+</script>
+</body>
+</html>
