@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[PRODUCT NAME] UI prototype</title>
+<style>
+  :root {
+    --surface: #f7f6f2;
+    --surface-raised: #ffffff;
+    --surface-sunken: #ecebe5;
+    --border: #d5d3ca;
+    --border-strong: #8b887d;
+    --text: #1a1a18;
+    --text-muted: #55534c;
+    --text-inverse: #ffffff;
+    --accent: #1f4e3d;
+    --accent-hover: #17392d;
+    --danger: #a4261d;
+    --success: #166534;
+    --radius: 4px;
+    --space: 16px;
+  }
+
+  :root[data-theme="dark"] {
+    --surface: #171917;
+    --surface-raised: #222521;
+    --surface-sunken: #101210;
+    --border: #3b403a;
+    --border-strong: #8f958b;
+    --text: #f2f1ec;
+    --text-muted: #c2c5bd;
+    --text-inverse: #101210;
+    --accent: #9ad9bb;
+    --accent-hover: #b3e5cc;
+    --danger: #ffb4ab;
+    --success: #86efac;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  a { color: var(--accent); }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  h2:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--surface-raised);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+
+  .skip-link:focus { left: 8px; top: 8px; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-raised);
+  }
+
+  .bar {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space) 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .name { font-size: 20px; font-weight: 700; }
+
+  nav { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  button {
+    min-height: 44px;
+    padding: 8px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface-raised);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  button:hover { background: var(--surface-sunken); }
+
+  button[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  button.primary:hover { background: var(--accent-hover); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  h2 { font-size: 24px; line-height: 1.3; margin: 0 0 8px; }
+
+  h3 { font-size: 18px; line-height: 1.4; margin: 0 0 8px; }
+
+  .lede { color: var(--text-muted); max-width: 64ch; margin: 0 0 24px; }
+
+  .panel {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .table-wrap { overflow-x: auto; }
+
+  table { border-collapse: collapse; width: 100%; min-width: 480px; }
+
+  th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th { font-size: 14px; color: var(--text-muted); }
+
+  .tag {
+    display: inline-block;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 2px 8px;
+    font-size: 14px;
+  }
+
+  .state-switch { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+  .state-note { margin: 0 0 16px; color: var(--text-muted); }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+  label { display: block; font-weight: 600; margin-bottom: 8px; }
+
+  input {
+    width: 100%;
+    max-width: 420px;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface-raised);
+    color: var(--text);
+    font: inherit;
+  }
+
+  .feedback { min-height: 24px; margin: 16px 0 0; font-weight: 600; }
+
+  .error-text { color: var(--danger); }
+
+  .success-text { color: var(--success); }
+
+  dl { margin: 0; }
+
+  dt { font-size: 14px; color: var(--text-muted); margin-top: 12px; }
+
+  dd { margin: 0 0 12px; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  footer p { max-width: 1100px; margin: 0 auto; padding: 16px 24px; }
+
+  @media (max-width: 640px) {
+    .bar { padding: 12px 16px; }
+    main { padding: 24px 16px 48px; }
+    .panel { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header>
+  <div class="bar">
+    <span class="name">[PRODUCT NAME]</span>
+    <nav aria-label="Prototype screens">
+      <button type="button" data-screen="list" aria-pressed="true">List</button>
+      <button type="button" data-screen="detail" aria-pressed="false">Detail</button>
+      <button type="button" data-screen="form" aria-pressed="false">Form</button>
+    </nav>
+    <button type="button" id="theme-toggle">Use dark theme</button>
+  </div>
+</header>
+
+<main id="main">
+  <section id="screen-list" data-panel="list" aria-labelledby="list-title">
+    <h2 id="list-title" tabindex="-1">List screen</h2>
+    <p class="lede">[Replace with the task and the decision the user makes here. Wireframe screen S-01.]</p>
+    <div class="panel">
+      <h3>States</h3>
+      <div class="state-switch" aria-label="Prototype states">
+        <button type="button" data-state="default" aria-pressed="true">Default</button>
+        <button type="button" data-state="loading" aria-pressed="false">Loading</button>
+        <button type="button" data-state="empty" aria-pressed="false">Empty</button>
+        <button type="button" data-state="error" aria-pressed="false">Error</button>
+      </div>
+
+      <div data-state-panel="default">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th scope="col">Item</th><th scope="col">State</th><th scope="col">Updated</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>[ITEM A]</td><td><span class="tag">In review</span></td><td>[DATE]</td></tr>
+              <tr><td>[ITEM B]</td><td><span class="tag">Ready</span></td><td>[DATE]</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div data-state-panel="loading" hidden>
+        <p class="state-note" role="status">Loading items. This is a prototype state, not a live request.</p>
+      </div>
+
+      <div data-state-panel="empty" hidden>
+        <p class="state-note">No items yet. Add the first item to see it here.</p>
+        <div class="actions">
+          <button type="button" data-reset-state>Show default state</button>
+        </div>
+      </div>
+
+      <div data-state-panel="error" hidden>
+        <p class="state-note error-text">Items could not load. Check the connection, then retry.</p>
+        <div class="actions">
+          <button type="button" data-reset-state>Retry</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-detail" data-panel="detail" aria-labelledby="detail-title" hidden>
+    <h2 id="detail-title" tabindex="-1">Detail screen</h2>
+    <p class="lede">[Replace with the task and the decision the user makes here. Wireframe screen S-02.]</p>
+    <div class="panel">
+      <h3>[Record name]</h3>
+      <dl>
+        <dt>Owner</dt><dd>[ROLE OR NAME]</dd>
+        <dt>Current value</dt><dd>[VALUE]</dd>
+        <dt>Proposed value</dt><dd>[VALUE]</dd>
+      </dl>
+      <div class="actions">
+        <button type="button" class="primary" id="stage-change">Stage change</button>
+      </div>
+      <p class="feedback" id="detail-feedback" role="status"></p>
+    </div>
+  </section>
+
+  <section id="screen-form" data-panel="form" aria-labelledby="form-title" hidden>
+    <h2 id="form-title" tabindex="-1">Form screen</h2>
+    <p class="lede">[Replace with the task and the decision the user makes here. Wireframe screen S-03.]</p>
+    <div class="panel">
+      <form id="item-form" novalidate>
+        <label for="item-name">Item name</label>
+        <input id="item-name" name="item-name" type="text" autocomplete="off" placeholder="[REAL VALUE]">
+        <div class="actions">
+          <button type="submit" class="primary">Save item</button>
+        </div>
+        <p class="feedback" id="form-feedback" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Prototype starter without product direction. Replace bracketed text before review. Dials: ENERGY 1 / RHYTHM 1 / MOTION 1.</p>
+</footer>
+
+<script>
+  const setPressed = (buttons, active) => {
+    buttons.forEach((button) => button.setAttribute("aria-pressed", String(button === active)));
+  };
+
+  const screenButtons = document.querySelectorAll("[data-screen]");
+  const screens = document.querySelectorAll("[data-panel]");
+  screenButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = document.getElementById("screen-" + button.dataset.screen);
+      screens.forEach((screen) => { screen.hidden = screen !== target; });
+      setPressed(screenButtons, button);
+      target.querySelector("h2").focus();
+    });
+  });
+
+  const stateButtons = document.querySelectorAll(".state-switch [data-state]");
+  const statePanels = document.querySelectorAll("[data-state-panel]");
+  const showState = (name) => {
+    statePanels.forEach((panel) => { panel.hidden = panel.dataset.statePanel !== name; });
+    setPressed(stateButtons, Array.from(stateButtons).find((button) => button.dataset.state === name));
+  };
+  stateButtons.forEach((button) => {
+    button.addEventListener("click", () => showState(button.dataset.state));
+  });
+  document.querySelectorAll("[data-reset-state]").forEach((button) => {
+    button.addEventListener("click", () => showState("default"));
+  });
+
+  document.getElementById("theme-toggle").addEventListener("click", (event) => {
+    const isDark = document.documentElement.dataset.theme === "dark";
+    document.documentElement.dataset.theme = isDark ? "light" : "dark";
+    event.currentTarget.textContent = isDark ? "Use dark theme" : "Use light theme";
+  });
+
+  document.getElementById("stage-change").addEventListener("click", () => {
+    document.getElementById("detail-feedback").textContent = "Change staged in prototype. Connect this to the real flow.";
+  });
+
+  const form = document.getElementById("item-form");
+  const input = document.getElementById("item-name");
+  const formFeedback = document.getElementById("form-feedback");
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!input.value.trim()) {
+      formFeedback.textContent = "Enter an item name before saving.";
+      formFeedback.className = "feedback error-text";
+      input.focus();
+      return;
+    }
+    formFeedback.textContent = "Item staged in prototype. Connect this to the real flow.";
+    formFeedback.className = "feedback success-text";
+    input.value = "";
+  });
+</script>
+</body>
+</html>
